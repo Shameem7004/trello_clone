@@ -1,0 +1,88 @@
+.add-list-btn {
+  width: 272px;
+  min-width: 272px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.24);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.add-list-btn:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.add-list-form {
+  width: 272px;
+  min-width: 272px;
+  background: #ebecf0;
+  border-radius: 8px;
+  padding: 8px;
+  flex-shrink: 0;
+}
+
+.add-list-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 2px solid #0079bf;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #172b4d;
+  margin-bottom: 8px;
+}
+
+.add-list-input:focus {
+  outline: none;
+}
+
+.add-list-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.add-list-submit {
+  background: #0079bf;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-list-submit:hover:not(:disabled) {
+  background: #026aa7;
+}
+
+.add-list-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.add-list-cancel {
+  background: transparent;
+  border: none;
+  color: #5e6c84;
+  font-size: 20px;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 3px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.add-list-cancel:hover {
+  color: #172b4d;
+}

@@ -1,0 +1,203 @@
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.13);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  padding: 0;
+}
+
+.card:hover {
+  background: #f4f5f7;
+  box-shadow: 0 1px 3px rgba(9, 30, 66, 0.2);
+}
+
+.card-dragging {
+  transform: rotate(5deg);
+  box-shadow: 0 8px 16px rgba(9, 30, 66, 0.25);
+  opacity: 0.8;
+}
+
+.card-content {
+  padding: 8px 12px;
+}
+
+.card-cover {
+  width: 100%;
+  height: 120px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 0;
+}
+
+.card-title {
+  margin: 0;
+  color: #172b4d;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.card-description {
+  margin: 4px 0 0;
+  color: #5e6c84;
+  font-size: 12px;
+  line-height: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-badges {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.card-label {
+  background-color: #091e4214;
+  color: #172b4d;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  max-width: 60px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-due-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background-color: #ddd;
+  color: #172b4d;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.card-due-date.overdue {
+  background-color: #fec5d3;
+  color: #ae2a19;
+}
+
+.card-due-date.completed {
+  background-color: #dffcf0;
+  color: #216e4e;
+}
+
+.card-member-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #091e4224;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #172b4d;
+  border: 2px solid white;
+  margin-left: -8px;
+}
+
+.card-member-avatar:first-child {
+  margin-left: 0;
+}
+
+.card-member-avatars {
+  display: flex;
+  margin-left: 4px;
+}
+
+.card-icons {
+  display: flex;
+  gap: 4px;
+  padding: 0 12px 8px;
+  font-size: 12px;
+}
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #626f86;
+  font-size: 11px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px 8px;
+}
+
+.card-delete-btn {
+  background: none;
+  border: none;
+  color: #626f86;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.card-delete-btn:hover {
+  background-color: #f0f1f3;
+  color: #ae2a19;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 6px;
+  }
+
+  .card-cover {
+    height: 80px;
+  }
+
+  .card-title {
+    font-size: 13px;
+  }
+
+  .card-badges {
+    padding: 6px 12px;
+    gap: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-content {
+    padding: 6px 10px;
+  }
+
+  .card-title {
+    font-size: 12px;
+  }
+
+  .card-badges {
+    padding: 4px 10px;
+  }
+}
