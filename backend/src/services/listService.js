@@ -16,4 +16,30 @@ async function createList(title, boardId) {
   return result.rows[0];
 }
 
-module.exports = { createList };
+async function editList(listId, title) {
+  const result = await pool.query(
+    "UPDATE lists SET title = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *",
+    [title, listId]
+  );
+
+  if (result.rows.length === 0) {
+    throw new Error("List not found");
+  }
+
+  return result.rows[0];
+}
+
+async function removeList(listId) {
+  const result = await pool.query(
+    "DELETE FROM lists WHERE id = $1 RETURNING *",
+    [listId]
+  );
+
+  if (result.rows.length === 0) {
+    throw new Error("List not found");
+  }
+
+  return result.rows[0];
+}
+
+module.exports = { createList, editList, removeList };

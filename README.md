@@ -1,227 +1,242 @@
-🗂️ Project Management Tool (Trello Clone)
+# 🗂️ Workspace Management Tool
 
-A Kanban-style project management web application inspired by Trello, built as part of the SDE Intern Fullstack Assignment.
-The application allows users to manage projects visually using boards, lists, and cards with smooth drag-and-drop interactions.
+A Kanban-style project management web application inspired by Trello, built as part of the SDE Intern Fullstack Assignment. The application allows users to manage projects visually using boards, lists, and cards with smooth drag-and-drop interactions.
 
-🚀 Features
-✅ Core Features
+## 🚀 Features
 
-Create and view Boards
+### ✅ Core Features
 
-Create, edit, delete Lists
+- **Board Management**
+  - Create and view boards with titles
+  - View boards with all lists and cards
+  
+- **Lists Management**
+  - Create, edit, and delete lists
+  - Drag & drop to reorder lists
+  
+- **Cards Management**
+  - Create cards with title
+  - Edit card title, description, and due date
+  - Delete cards
+  - Drag & drop cards between lists
+  - Drag & drop to reorder cards within a list
+  
+- **Card Details**
+  - Add and edit descriptions
+  - Set due dates with visual indicators (overdue, today, upcoming)
+  - View card details in modal
+  
+- **Search & Filter**
+  - Search cards by title in real-time
 
-Create, edit, delete Cards
+### ⭐ Bonus Features
 
-Drag & drop:
+- ✅ Responsive UI (Desktop & Mobile)
+- ✅ Multiple boards support
+- ✅ Seeded sample data
+- ✅ Clean Trello-like UI design
+- ✅ Card modal for detailed editing
+- ✅ Visual due date indicators
+- ✅ Smooth drag-and-drop animations
 
-Reorder lists
+## 🧠 Tech Stack
 
-Move cards across lists
+### Frontend
+- **React.js** (Vite)
+- **@hello-pangea/dnd** - Drag and Drop
+- **Axios** - HTTP client
+- **CSS3** - Styling
 
-Reorder cards within a list
+### Backend
+- **Node.js** + **Express.js**
+- **PostgreSQL** - Database
+- **pg** - PostgreSQL client
+- **dotenv** - Environment variables
 
-Card details:
+## 🏗️ Architecture
 
-Description
+```
+Frontend (React)
+      ↓
+   REST APIs
+      ↓
+Express Server
+      ↓
+  PostgreSQL
+```
 
-Due date
+## 📁 Project Structure
 
-Labels (color tags)
-
-Checklist items
-
-Assign members
-
-Search cards by title
-
-Filter cards by:
-
-Labels
-
-Members
-
-Due date
-
-⭐ Bonus Features
-
-Responsive UI (Desktop & Mobile)
-
-Multiple boards support
-
-Seeded sample data
-
-Clean Trello-like UI
-
-🧠 Tech Stack
-Frontend
-
-React.js (Vite)
-
-Tailwind CSS
-
-Redux Toolkit
-
-Drag & Drop: @hello-pangea/dnd
-
-Backend
-
-Node.js
-
-Express.js
-
-Prisma ORM
-
-Database
-
-PostgreSQL
-
-🏗️ Architecture (High Level)
-React (Frontend)
-   |
-   | REST APIs
-   v
-Express Server (Backend)
-   |
-   | Prisma ORM
-   v
-PostgreSQL Database
-
-📁 Project Structure
-project-management/
-│
+```
+Workspace_Management/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
+│   │   │   ├── Card/
+│   │   │   ├── CardModal/
+│   │   │   ├── List/
+│   │   │   ├── Header/
+│   │   │   └── SearchBar/
 │   │   ├── pages/
-│   │   ├── redux/
-│   │   └── api/
+│   │   │   └── BoardPage.jsx
+│   │   ├── api/
+│   │   │   └── api.js
+│   │   └── App.jsx
 │   └── package.json
 │
 ├── backend/
-│   ├── prisma/
-│   │   └── schema.prisma
 │   ├── src/
 │   │   ├── routes/
 │   │   ├── controllers/
-│   │   └── index.js
-│   ├── .env
+│   │   ├── services/
+│   │   ├── db/
+│   │   └── server.js
+│   ├── sql/
+│   │   ├── schema.sql
+│   │   └── seed.sql
 │   └── package.json
 │
 └── README.md
+```
 
-⚙️ Setup Instructions (Step-by-Step)
-1️⃣ Clone the Repository
-git clone https://github.com/your-username/project-management.git
-cd project-management
+## ⚙️ Setup Instructions
 
-2️⃣ Frontend Setup
-cd frontend
-npm install
-npm run dev
+### Prerequisites
+- Node.js (v16+)
+- PostgreSQL (v12+)
+- npm or yarn
 
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/yourusername/workspace-management.git
+cd workspace-management
+```
 
-📍 Frontend runs at:
-👉 http://localhost:5173
+### 2️⃣ Backend Setup
 
-3️⃣ Backend Setup
+```bash
 cd backend
 npm install
 
-Create .env file
-DATABASE_URL="postgresql://username:password@localhost:5432/projectdb"
+# Create .env file
+echo "DATABASE_URL=your_postgresql_connection_string" > .env
+echo "PORT=3000" >> .env
 
-4️⃣ Prisma Setup
-npx prisma generate
-npx prisma db push
+# Run database migrations
+psql your_database_url -f sql/schema.sql
+psql your_database_url -f sql/seed.sql
 
-
-(Optional) Open Prisma Studio:
-
-npx prisma studio
-
-5️⃣ Start Backend Server
+# Start backend server
 npm run dev
+```
 
+📍 Backend runs at: **http://localhost:3000**
 
-📍 Backend runs at:
-👉 http://localhost:4000
+### 3️⃣ Frontend Setup
 
-🗄️ Database Schema (Overview)
+```bash
+cd frontend
+npm install
 
-User
+# Create .env file
+echo "VITE_API_URL=http://localhost:3000" > .env
 
-Board
+# Start frontend
+npm run dev
+```
 
-List
+📍 Frontend runs at: **http://localhost:5173**
 
-Card
+## 🗄️ Database Schema
 
-Label
+### Tables
+- `boards` - Project boards
+- `lists` - Lists within boards
+- `cards` - Cards within lists
+- `members` - Team members
+- `labels` - Card labels (tags)
+- `checklists` - Card checklists
+- `checklist_items` - Items within checklists
+- `card_labels` - Many-to-many relationship
+- `card_members` - Many-to-many relationship
+- `attachments` - File attachments
+- `comments` - Card comments
 
-Checklist
+### Key Relationships
+- Board → Lists (1:Many)
+- List → Cards (1:Many)
+- Card → Labels (Many:Many)
+- Card → Members (Many:Many)
+- Card → Checklists (1:Many)
 
-Members
+## 🎨 Features Demonstration
 
-Each Board has multiple Lists, each List has multiple Cards, and card positions are maintained using an order field to support drag-and-drop.
+### Drag & Drop
+- Smooth card reordering within lists
+- Move cards between lists
+- Reorder lists on the board
 
-🔁 Drag & Drop Logic
+### Card Management
+- Click card to open detailed modal
+- Edit title, description, due date
+- Visual due date indicators
+- Delete cards with confirmation
 
-Frontend captures drag events
+### List Management
+- Edit list title inline
+- Delete lists with confirmation
+- Add new lists dynamically
 
-Updated positions are sent to backend
+### Search
+- Real-time card search
+- Highlight matching cards
 
-Backend updates order and listId
+## 🌐 Deployment
 
-Database persists changes
+- **Frontend**: Vercel
+- **Backend**: Render
+- **Database**: Railway PostgreSQL
 
-UI re-renders instantly
+## 📌 API Endpoints
 
-🧪 Sample Data
+### Boards
+- `GET /boards` - Get all boards
+- `GET /boards/:boardId` - Get board with lists and cards
 
-The database is seeded with:
+### Lists
+- `POST /lists` - Create new list
+- `PUT /lists/:listId` - Update list title
+- `DELETE /lists/:listId` - Delete list
 
-A sample board
+### Cards
+- `POST /cards` - Create new card
+- `GET /cards/:cardId` - Get card details
+- `PUT /cards/:cardId` - Update card
+- `PUT /cards/move` - Move card
+- `DELETE /cards/:cardId` - Delete card
 
-Predefined lists (Todo, In Progress, Done)
+## 🧪 Sample Data
 
-Sample cards
+Database is seeded with:
+- 3 boards ("Sample Project Board", "Website Redesign", "Mobile App Launch")
+- Multiple lists per board
+- Sample cards with descriptions
+- 6 team members
+- Labels with colors
 
-Dummy members
+## 🎯 Assumptions
 
-No authentication is required; a default user is assumed to be logged in.
+- Single default user (no authentication)
+- Focus on core Trello functionality
+- REST APIs instead of GraphQL
+- PostgreSQL for data persistence
 
-🌐 Deployment
+## 👨‍💻 Author
 
-Frontend: Vercel / Netlify
-
-Backend: Render / Railway
-
-Database: Railway / Supabase PostgreSQL
-
-📌 Assumptions
-
-Single default user (no login)
-
-Focus on functionality and UI similarity
-
-REST APIs used instead of GraphQL
-
-Drag & drop state persisted in database
-
-🧠 Code Understanding
-
-AI tools were used for guidance, but every line of code is understood and can be explained during evaluation, including:
-
-Prisma relations
-
-Drag & drop logic
-
-State management
-
-API design decisions
-
-👨‍💻 Author
-
-Md Shameem Alam
-Prefinal Year Student
+**Md Shameem Alam**  
+Prefinal Year Student  
 Food Process Engineering, NIT Rourkela
+
+## 📝 License
+
+This project is created for educational purposes as part of the SDE Intern Fullstack Assignment.

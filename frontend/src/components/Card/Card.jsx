@@ -4,7 +4,6 @@ import "./Card.css";
 function Card({ card, isDragging, onEdit, onDelete }) {
   const [isHovering, setIsHovering] = useState(false);
 
-  // Format due date
   const formatDueDate = (dueDate) => {
     if (!dueDate) return null;
     const date = new Date(dueDate);

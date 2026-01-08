@@ -39,8 +39,11 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-.header-logo svg {
-  display: block;
+.header-logo-text {
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .header-search {
