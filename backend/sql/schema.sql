@@ -1,9 +1,22 @@
+-- Drop existing tables if they exist
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS attachments CASCADE;
+DROP TABLE IF EXISTS checklist_items CASCADE;
+DROP TABLE IF EXISTS checklists CASCADE;
+DROP TABLE IF EXISTS card_members CASCADE;
+DROP TABLE IF EXISTS card_labels CASCADE;
+DROP TABLE IF EXISTS labels CASCADE;
+DROP TABLE IF EXISTS cards CASCADE;
+DROP TABLE IF EXISTS members CASCADE;
+DROP TABLE IF EXISTS lists CASCADE;
+DROP TABLE IF EXISTS boards CASCADE;
+
 CREATE TABLE boards (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title VARCHAR(255) NOT NULL,
   description TEXT,
   background_color VARCHAR(7),
-  background_image URL,
+  background_image TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -20,6 +33,7 @@ CREATE TABLE lists (
 CREATE TABLE members (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(255) NOT NULL,
+  avatar VARCHAR(10),
   avatar_color VARCHAR(7),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -30,7 +44,7 @@ CREATE TABLE cards (
   title VARCHAR(255) NOT NULL,
   description TEXT,
   position INT NOT NULL DEFAULT 0,
-  cover_image URL,
+  cover_image TEXT,
   due_date DATE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

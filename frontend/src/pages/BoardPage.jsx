@@ -11,29 +11,69 @@ function BoardPage() {
   const [boardTitle, setBoardTitle] = useState("Sample Project Board");
   const [searchQuery, setSearchQuery] = useState("");
   const [isStarred, setIsStarred] = useState(false);
-  const boardId = "16c6b2e9-e11a-442c-a454-52df4762c124";
+  const [boardId, setBoardId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchBoard();
+    fetchBoards();
   }, []);
 
-  async function fetchBoard() {
+  async function fetchBoards() {
     try {
-      const res = await API.get(`/boards/${boardId}`);
-      const normalized = normalizeData(res.data);
-      setLists(normalized);
-      if (res.data.length > 0 && res.data[0].board_title) {
-        setBoardTitle(res.data[0].board_title);
+      setLoading(true);
+      const res = await API.get('/boards');
+      
+      if (res.data && res.data.length > 0) {
+        const firstBoard = res.data[0];
+        setBoardId(firstBoard.id);
+        setBoardTitle(firstBoard.title);
+        await fetchBoard(firstBoard.id);
+      } else {
+        setError("No boards found. Please check your database.");
+        setLoading(false);
       }
     } catch (error) {
+      console.error("Error fetching boards:", error);
+      setError(`Failed to load boards: ${error.message}`);
+      setLoading(false);
+    }
+  }
+
+  async function fetchBoard(id) {
+    try {
+      setLoading(true);
+      const res = await API.get(`/boards/${id}`);
+      
+      if (!res.data || res.data.length === 0) {
+        setLists([]);
+        setError(null);
+        setLoading(false);
+        return;
+      }
+
+      const normalized = normalizeData(res.data);
+      setLists(normalized);
+      
+      if (res.data[0].board_title) {
+        setBoardTitle(res.data[0].board_title);
+      }
+      
+      setError(null);
+    } catch (error) {
       console.error("Error fetching board:", error);
+      setError(`Failed to load board: ${error.response?.data?.error || error.message}`);
+    } finally {
+      setLoading(false);
     }
   }
 
   function normalizeData(rows) {
     const map = {};
+    
     rows.forEach(r => {
       if (!r.list_id) return;
+      
       if (!map[r.list_id]) {
         map[r.list_id] = { 
           id: r.list_id, 
@@ -42,6 +82,7 @@ function BoardPage() {
           cards: [] 
         };
       }
+      
       if (r.card_id) {
         map[r.list_id].cards.push({ 
           id: r.card_id, 
@@ -53,9 +94,7 @@ function BoardPage() {
     });
     
     const listsArray = Object.values(map);
-    // Sort lists by position
     listsArray.sort((a, b) => a.position - b.position);
-    // Sort cards within each list
     listsArray.forEach(list => {
       list.cards.sort((a, b) => a.position - b.position);
     });
@@ -77,18 +116,15 @@ function BoardPage() {
       source.index === destination.index
     ) return;
 
-    // Handle list reordering
     if (type === "LIST") {
       const newLists = Array.from(lists);
       const [movedList] = newLists.splice(source.index, 1);
       newLists.splice(destination.index, 0, movedList);
       
       setLists(newLists);
-      // TODO: Add API call to update list positions
       return;
     }
 
-    // Handle card reordering/moving
     const sourceListIndex = lists.findIndex(l => l.id === source.droppableId);
     const destListIndex = lists.findIndex(l => l.id === destination.droppableId);
 
@@ -101,7 +137,6 @@ function BoardPage() {
     const [movedCard] = sourceCards.splice(source.index, 1);
 
     if (source.droppableId === destination.droppableId) {
-      // Moving within same list
       sourceCards.splice(destination.index, 0, movedCard);
       
       const newLists = [...lists];
@@ -112,7 +147,6 @@ function BoardPage() {
       
       setLists(newLists);
     } else {
-      // Moving to different list
       const destCards = Array.from(destList.cards);
       destCards.splice(destination.index, 0, movedCard);
       
@@ -137,11 +171,10 @@ function BoardPage() {
       });
     } catch (error) {
       console.error("Error moving card:", error);
-      fetchBoard();
+      if (boardId) fetchBoard(boardId);
     }
   }
 
-  // Filter cards based on search
   const filteredLists = lists.map(list => ({
     ...list,
     cards: list.cards.filter(card => 
@@ -150,6 +183,36 @@ function BoardPage() {
   }));
 
   const displayLists = searchQuery ? filteredLists : lists;
+
+  if (loading) {
+    return (
+      <div className="board-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: 'white', fontSize: '18px' }}>Loading board...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="board-page" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+        <p style={{ color: 'white', fontSize: '18px' }}>{error}</p>
+        <button 
+          onClick={fetchBoards}
+          style={{ 
+            padding: '10px 20px', 
+            backgroundColor: '#0079bf', 
+            color: 'white', 
+            border: 'none', 
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="board-page">
@@ -210,7 +273,7 @@ function BoardPage() {
                         <List 
                           list={list} 
                           boardId={boardId} 
-                          onRefresh={fetchBoard}
+                          onRefresh={() => boardId && fetchBoard(boardId)}
                           dragHandleProps={provided.dragHandleProps}
                           isDragging={snapshot.isDragging}
                         />
@@ -219,7 +282,7 @@ function BoardPage() {
                   </Draggable>
                 ))}
                 {provided.placeholder}
-                <AddList boardId={boardId} onAdd={handleAddList} />
+                {boardId && <AddList boardId={boardId} onAdd={handleAddList} />}
               </div>
             </div>
           )}

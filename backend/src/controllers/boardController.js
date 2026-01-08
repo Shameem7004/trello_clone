@@ -1,4 +1,4 @@
-const { getBoard } = require("../services/boardService");
+const { getBoard, getAllBoards } = require("../services/boardService");
 
 async function fetchBoard(req, res) {
   try {
@@ -11,4 +11,14 @@ async function fetchBoard(req, res) {
   }
 }
 
-module.exports = { fetchBoard };
+async function fetchAllBoards(req, res) {
+  try {
+    const data = await getAllBoards();
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching boards:", error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
+module.exports = { fetchBoard, fetchAllBoards };
